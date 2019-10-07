@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../../models/user');
+const Profile = require('../../models/profile');
 const jwt = require('jsonwebtoken');
 
 const signUp = (req, res) => {
@@ -23,9 +24,24 @@ const signUp = (req, res) => {
             });
             user.save()
               .then(() => {
-                res.status(201).json({
-                  message: 'User created successfully',
+                const profile = new Profile({
+                  name: req.body.name,
+                  lastname: req.body.lastname,
+                  username: req.body.username,
+                  adress: req.body.adress,
+                  email: user._id,
                 })
+                profile.save()
+                .then(() => {
+                  res.status(201).json({
+                    message: 'User and profile created successfully',
+                  })
+                })
+                .catch(error => {
+                  res.status(500).json({
+                    error
+                  })
+                });
               })
               .catch(error => {
                 res.status(500).json({
