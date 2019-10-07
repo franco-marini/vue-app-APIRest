@@ -14,19 +14,17 @@ const getAll = (req, res, next) => {
                 type: 'GET',
                 url: 'http://localhost:3000/categories/' + doc.id
               }
-            }
+            };
           })
         };
         res.status(200).json(response);  
       })
-      .catch(
-        err => {
-          console.log(err);
-          res.status(500).json({
-            error: err
-          });
-        } 
-      );
+      .catch( error => {
+        console.log(error);
+        res.status(500).json({
+          error
+        });
+      });
 };
 
 const getById = (req, res, next) => {
@@ -47,11 +45,11 @@ const getById = (req, res, next) => {
           res.status(404).json({ message: 'No valid entry found for provided ID'});
         }
       })
-    .catch( err => { 
-      console.log(err);
+    .catch( error => {
+      console.log(error); 
       res.status(500).json({
-        error: err
-      })
+        error: error
+      });
     });
 };
 
@@ -73,11 +71,11 @@ const insert = (req, res, next) => {
         }
       });
     })
-    .catch(err => {
-      console.log(err);
+    .catch(error => {
+      console.log(error);
       res.status(500).json({
-        error: err
-      })
+        error
+      });
     }); 
 };
 
@@ -100,17 +98,17 @@ const update = (req, res, next) => {
         }
       });
     })
-    .catch( err => {
-      console.log(err);
+    .catch( error => {
+      console.log(error);
       res.status(500).json({
-        error: err
-      })
+        error
+      });
     });
 };
 
 const remove = (req, res, next) => {
   const { id } = req.params;
-  Category.remove({id: id})
+  Category.remove({ id: id })
     .exec()
     .then( () => {
       res.status(200).json({
@@ -121,11 +119,11 @@ const remove = (req, res, next) => {
         }
       });
     })
-    .catch(err => {
-      console.log(err);
+    .catch(error => {
+      console.log(error);
       res.status(500).json({
-        error: err
-      })
+        error
+      });
     });
 };
 

@@ -30,23 +30,23 @@ const signUp = (req, res) => {
                   username: req.body.username,
                   adress: req.body.adress,
                   email: user._id,
-                })
-                profile.save()
-                .then(() => {
-                  res.status(201).json({
-                    message: 'User and profile created successfully',
-                  })
-                })
-                .catch(error => {
-                  res.status(500).json({
-                    error
-                  })
                 });
-              })
+                profile.save()
+                  .then(() => {
+                    res.status(201).json({
+                      message: 'User and profile created successfully',
+                    });
+                  })
+                  .catch(error => {
+                    res.status(500).json({
+                      error
+                    });
+                  });
+                })
               .catch(error => {
                 res.status(500).json({
                   error
-                })
+                });
               }); 
           }
         });
@@ -59,7 +59,7 @@ const login = (req, res) => {
     .exec()
     .then(user => {
       if (user.length < 1) {
-        console.log('[Log] Login: User not found.')
+        console.log('[Log] Login: User not found.');
         return res.status(401).json({
           message: 'Auth failed',
         });
@@ -95,7 +95,7 @@ const login = (req, res) => {
     .catch(error => {
       res.status(500).json({
         error
-      })
+      });
     });
 };
 
@@ -105,12 +105,12 @@ const remove = (req, res) => {
     .then(result => {
       res.status(200).json({
         message: 'User deleted',
-      })
+      });
     })
     .catch(error => {
       res.status(500).json({
         error
-      })
+      });
     });
 };
 

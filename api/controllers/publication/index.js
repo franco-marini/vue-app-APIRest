@@ -6,7 +6,7 @@ const getAll = (req, res, next) => {
       .select('date link title content categories image')
       .populate('categories', 'name')
       .exec()
-      .then(docs => {
+      .then( docs => {
         const response = {
           count: docs.length,
           publications: docs.map(doc => {
@@ -16,19 +16,17 @@ const getAll = (req, res, next) => {
                 type: 'GET',
                 url: 'http://localhost:3000/publications/' + doc.id
               }
-            }
+            };
           })
         };
         res.status(200).json(response);  
       })
-      .catch(
-        err => {
-          console.log(err);
-          res.status(500).json({
-            error: err
-          });
-        } 
-      );
+      .catch( error => {
+        console.log(error);
+        res.status(500).json({
+          error
+        });
+      });
 };
 
 const getById = (req, res, next) => {
@@ -49,11 +47,11 @@ const getById = (req, res, next) => {
           res.status(404).json({ message: 'No valid entry found for provided ID'});
         }
       })
-    .catch( err => { 
-      console.log(err);
+    .catch( error => { 
+      console.log(error);
       res.status(500).json({
-        error: err
-      })
+        error
+      });
     });
 };
 
@@ -63,7 +61,6 @@ const getByCategory = (req, res, next) => {
     .select('date link title content categories image')
     .exec()
     .then(publications => {
-      console.log(publications)
       if (publications < 1) {
         return res.status(404).json({
           message: 'Category not found',
@@ -73,11 +70,11 @@ const getByCategory = (req, res, next) => {
         publications: publications
       });
     })
-    .catch(err => { 
-      console.log(err);
+    .catch( error => { 
+      console.log(error);
       res.status(500).json({
-        error: err
-      })
+        error
+      });
     });
 };
 
@@ -98,8 +95,7 @@ const insert = (req, res, next) => {
         image: req.file.path
       });
       publication.categories.push(req.body.categoryId);
-      return publication
-        .save()
+      return publication.save();
     })
     .then(result => { 
       res.status(201).json({
@@ -119,10 +115,10 @@ const insert = (req, res, next) => {
         }
       });
     })
-    .catch(err => {
-      console.log(err);
+    .catch( error => {
+      console.log(error);
       res.status(500).json({
-        error: err
+        error
       })
     }); 
 };
@@ -137,7 +133,7 @@ const update = (req, res, next) => {
     { id: id },
     { $set: updateOps })
     .exec()
-    .then( result => {
+    .then( () => {
       res.status(200).json({
         message: 'Publication updated',
         request: {
@@ -146,11 +142,11 @@ const update = (req, res, next) => {
         }
       });
     })
-    .catch( err => {
-      console.log(err);
+    .catch( error => {
+      console.log(error);
       res.status(500).json({
-        error: err
-      })
+        error
+      });
     });
 };
 
@@ -172,10 +168,10 @@ const remove = (req, res, next) => {
         }
       });
     })
-    .catch(err => {
-      console.log(err);
+    .catch( error => {
+      console.log(error);
       res.status(500).json({
-        error: err
+        error
       })
     });
 };
