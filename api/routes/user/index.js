@@ -6,10 +6,12 @@ const {
   login,
   signUp,
   remove,
+  getProfile,
 } = controller;
 
 router.post('/login', login);
 router.post('/signup', signUp);
 router.delete('/:id', remove);
+router.get('/profile/:userId', getProfile);
 
 module.exports = router;

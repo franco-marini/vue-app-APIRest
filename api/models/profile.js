@@ -6,7 +6,7 @@ const profileSchema = mongoose.Schema({
   lastname: { type: String, required: true },
   username: { type: String, required: true },
   adress: { type: String, required: true },
-  email: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 });
 
 module.exports = mongoose.model('Profile', profileSchema);

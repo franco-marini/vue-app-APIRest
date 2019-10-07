@@ -29,7 +29,7 @@ const signUp = (req, res) => {
                   lastname: req.body.lastname,
                   username: req.body.username,
                   adress: req.body.adress,
-                  email: user._id,
+                  user: user._id,
                 });
                 profile.save()
                   .then(() => {
@@ -114,8 +114,32 @@ const remove = (req, res) => {
     });
 };
 
+const getProfile = (req, res) => {
+  const { userId } = req.params;
+  console.log(userId)
+  Profile.find( { user: userId } )
+    .select('name lastname username adress')
+    .exec()
+    .then( profiles => {
+      if (profiles < 1) {
+        return res.status(404).json({
+          message: 'Profile not found'
+        });
+      } 
+      return res.status(201).json({
+        profile: profiles[0]
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        error
+      });
+    });
+};
+
 module.exports = {
   login,
   signUp,
   remove,
+  getProfile,
 };
