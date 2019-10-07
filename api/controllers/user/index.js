@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const User = require('../../models/user');
 const jwt = require('jsonwebtoken');
 
-const signUp = (req, res, next) => {
+const signUp = (req, res) => {
   User.find({ email: req.body.email })
     .exec()
     .then(user => {
@@ -22,15 +22,14 @@ const signUp = (req, res, next) => {
               password: hash
             });
             user.save()
-              .then(result => {
+              .then(() => {
                 res.status(201).json({
                   message: 'User created successfully',
                 })
               })
-              .catch(err => {
-                console.log(err)
+              .catch(error => {
                 res.status(500).json({
-                  error: err,
+                  error
                 })
               }); 
           }
@@ -39,11 +38,12 @@ const signUp = (req, res, next) => {
     });
 };
 
-const login = (req, res, next) => {
+const login = (req, res) => {
   User.find({ email: req.body.email })
     .exec()
     .then(user => {
       if (user.length < 1) {
+        console.log('[Log] Login: User not found.')
         return res.status(401).json({
           message: 'Auth failed',
         });
@@ -63,10 +63,12 @@ const login = (req, res, next) => {
           {
             expiresIn: '1h'
           });
+          const { exp } = jwt.decode(token);
           return res.status(200).json({
             message: 'Auth successful',
             token: token,
-            users: user[0].email
+            user: user[0].email,
+            expiration: exp
           });
         }
         res.status(401).json({
@@ -81,7 +83,7 @@ const login = (req, res, next) => {
     });
 };
 
-const remove = (req, res, next) => {
+const remove = (req, res) => {
   User.remove({ id: req.params.id })
     .exec()
     .then(result => {

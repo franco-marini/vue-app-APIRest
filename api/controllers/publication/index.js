@@ -89,6 +89,7 @@ const insert = (req, res, next) => {
           message: 'Category not found'
         });
       }
+      // Validations!
       const publication = new Publication ({
         date: req.body.date,
         link: req.body.link,
