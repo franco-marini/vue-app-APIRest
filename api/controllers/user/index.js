@@ -84,6 +84,7 @@ const login = (req, res) => {
             message: 'Auth successful',
             token: token,
             user: user[0].email,
+            id: user[0]._id,
             expiration: exp
           });
         }
